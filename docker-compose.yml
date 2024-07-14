@@ -8,6 +8,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     expose: [ "8080" ]
     env_file: .env
+    restart: always
 
   tester:
     image: oneeonly/r2d2-tester:latest
@@ -16,6 +17,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /var/db/r2d2:/var/db/r2d2
     env_file: .env
+    restart: always
 
   mysql:
     image: mysql:latest
