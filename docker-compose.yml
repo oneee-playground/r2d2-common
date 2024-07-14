@@ -5,7 +5,7 @@ services:
     image: oneeonly/r2d2-api-server:latest
     networks: [ testnet ]
     volumes:
-      - docker-sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
     expose: [ "8080" ]
     env_file: .env
 
@@ -13,8 +13,8 @@ services:
     image: oneeonly/r2d2-tester:latest
     networks: [ testnet, execnet ]
     volumes:
-      - docker-sock:/var/run/docker.sock
-      - work-storage:/var/db/r2d2
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/db/r2d2:/var/db/r2d2
     env_file: .env
 
   mysql:
@@ -46,13 +46,3 @@ networks:
   execnet:
     name: exec-network
     driver: bridge
-
-  
-volumes:
-  docker-sock:
-    external: true
-    name: /var/run/docker.sock
-  work-storage:
-    external: true
-    name: /var/db/r2d2
-      
