@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+  api-server:
+    image: oneeonly/r2d2-api-server:latest
+    networks: [ testnet ]
+    volumes:
+      - docker-sock:/var/run/docker.sock
+    expose: [ "8080:8080" ]
+    env_file: .env
+
+  tester:
+    image: oneeonly/r2d2-tester:latest
+    networks: [ testnet, execnet ]
+    volumes:
+      - docker-sock:/var/run/docker.sock
+      - work-storage:/var/db/r2d2
+    env_file: .env
+
+  mysql:
+    image: mysql:latest
+    networks: [ testnet ]
+    environment:
+      - MYSQL_DATABASE=r2d2
+      - MYSQL_ROOT_PASSWORD=1234
+      - TZ=Asia/Seoul
+
+  redis:
+    image: redis:latest
+    networks: [ testnet ]
+    environment:
+      - TZ=Asia/Seoul
+
+  influxdb:
+    image: influxdb:latest
+    networks: [ testnet ]
+    expose: [ "8086:8086" ]
+    environment:
+      - TZ=Asia/Seoul
+
+networks:
+  testnet:
+    name: test-network
+    driver: test-network
+
+  execnet:
+    name: exec-network
+    driver: exec-network
+
+  
+volumes:
+  docker-sock:
+    external: true
+    name: /var/run/docker.sock
+  work-storage:
+    external: true
+    name: /var/db/r2d2
+      
