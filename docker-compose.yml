@@ -41,11 +41,11 @@ services:
 networks:
   testnet:
     name: test-network
-    driver: test-network
+    driver: bridge
 
   execnet:
     name: exec-network
-    driver: exec-network
+    driver: bridge
 
   
 volumes:
